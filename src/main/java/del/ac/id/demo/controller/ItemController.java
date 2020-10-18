@@ -31,6 +31,16 @@ public class ItemController {
 		return mv;
 	}
 	
+	@RequestMapping("/")
+	public ModelAndView index() {
+		List<Item> items = itemRepository.findAll();
+		
+		ModelAndView mv = new ModelAndView("index");
+		mv.addObject("items", items);
+		return mv;
+	}
+	
+	
 	@RequestMapping("/admin/item")
 	public ModelAndView itemAdmin() {
 		List<Item> items = itemRepository.findAll();
@@ -97,7 +107,7 @@ public class ItemController {
 			update.set("rating", item.get().getRating()+rating/2);
 			UpdateResult result = mongoTemplate.updateFirst(query, update, Item.class);
 		}
-		ModelAndView mv = new ModelAndView("redirect:/item");
+		ModelAndView mv = new ModelAndView("redirect:/");
 					
 		return mv;
 	 }
@@ -115,7 +125,7 @@ public class ItemController {
 			update.set("item_detail.category", category);
 			UpdateResult result = mongoTemplate.updateFirst(query, update, Item.class);
 		}
-		ModelAndView mv = new ModelAndView("redirect:/admin/item");
+		ModelAndView mv = new ModelAndView("redirect:/");
 					
 		return mv;
 	 }
