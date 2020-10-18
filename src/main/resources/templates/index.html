@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="ISO-8859-1">
+<title>Registration and Login App</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+</head>
+<body>
+	<!-- create navigation bar ( header) -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" th:href="@{/}">Toped</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<br>
+	<br><br>
+	<br>
+
+
+	<div class="container my-2">
+		<div sec:authorize="isAuthenticated()">
+			Welcome <b><span sec:authentication="name">Username</span></b>
+			&nbsp;
+			<i><span sec:authentication="principal.authorities">Roles</span></i>
+		</div>
+        <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+        	<h1>Welcome to Toped Commerce!</h1>
+		<table class="table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Stock</th>
+					<th>Price</th>
+					<th>Rating</th>
+					<th>Sold</th>
+					<th>Seen</th>
+					<th>Weight</th>
+					<th>Condition</th>
+					<th>Category</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="item : ${items}">
+					<td th:text="${item.item_name}"></td>
+					<td th:text="${item.stock}"></td>
+					<td th:text="${item.price}"></td>
+					<td th:text="${item.rating}"></td>
+					<td th:text="${item.sold}"></td>
+					<td th:text="${item.seen}"></td>
+					<td th:text="${item.itemDetail.weight}"></td>
+					<td th:text="${item.itemDetail.condition}"></td>
+					<td th:text="${item.itemDetail.insurance}"></td>
+					<td><a th:href="@{'/admin/item/formUpdate/'+${item.id}}" class="btn btn-primary">Update</a></td>
+				</tr>
+			</tbody>
+		</table>
+        </div>
+        <div sec:authorize="hasAuthority('ROLE_USER')">
+        	<h1>Welcome to Toped Commerce!</h1>
+			<table class="table table-striped table-responsive-md">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Stock</th>
+						<th>Price</th>
+						<th>Rating</th>
+						<th>Sold</th>
+						<th>Seen</th>
+						<th>Weight</th>
+						<th>Condition</th>
+						<th>Category</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item : ${items}">
+						<td th:text="${item.item_name}"></td>
+						<td th:text="${item.stock}"></td>
+						<td th:text="${item.price}"></td>
+						<td th:text="${item.rating}"></td>
+						<td th:text="${item.sold}"></td>
+						<td th:text="${item.seen}"></td>
+						<td th:text="${item.itemDetail.weight}"></td>
+						<td th:text="${item.itemDetail.condition}"></td>
+						<td th:text="${item.itemDetail.insurance}"></td>
+						<td><a th:href="@{'/item/formBuy/'+${item.id}}" class="btn btn-primary">Buy</a></td>
+					</tr>
+				</tbody>
+			</table>
+        </div>
+    </div>
+	
+</body>
+</html>
